@@ -19,14 +19,21 @@
   </head>
   <body>
 
-      {% include 'Templates/Layouts/nav.twig' %}
-      <div class="container p-5">
-        {% include 'Templates/Layouts/flash.twig' %}
+      {# {% include 'Templates/Layouts/nav.twig' %} #}
+      {# <div class="container p-5"> #}
         <div id="app"  class="v-application v-application--is-ltr theme--light" data-app="true">
-          {% block content %}
-          {% endblock %}
+          <div class="v-application--wrap">
+            <header>
+              <nav-component></nav-component>
+            </header>
+            <main class="py-4">
+            {% include 'Templates/Layouts/flash.twig' %}
+            {% block content %}
+            {% endblock %}
+            </main>
+          </div>
         </div>
-      </div>
+      {# </div> #}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"
       integrity="sha512-QAV866KcCo2YSgj8D7BW+Zn3Fe5wVKTWwzKtWy8mkW+tePcJL7JYilvdfrBFQcdz4ODD48GpIPnhTp9UDI37uw=="
       crossorigin="anonymous"

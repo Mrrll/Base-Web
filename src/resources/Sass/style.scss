@@ -1,10 +1,25 @@
-body {
-    height: 100vh;
-    header{
-        position: absolute;
-        width: 100%;
-    }
-    main{
-        height: 100%;
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    outline: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+}
+html {
+    overflow: auto;
+    body {
+        height: 100vh;
+        header{
+            position: absolute;
+            width: 100%;
+        }
+        main{
+            height: 100%;
+        }
     }
 }
