@@ -3,20 +3,23 @@
 // ? Importamos plugines ...
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 
 // *: Construimos el modulo de exportacion ...
 module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             filename: '[name].css', // !: Definimos el nombre [name] del Entry para el archivo css ...
+            chunkFilename: '[id].css'
         }), // *: Instanciamos el Plugin ...
+        new VueLoaderPlugin()
     ],
     entry: {
-        app: ['./src/index.js', './src/style.css'] // !: Colocamos dos arhivos para un punto de entrada ...
+        app: ['./src/resources/Js/index.js', './src/resources/Css/Style.css'] // !: Colocamos dos arhivos para un punto de entrada ...
     },
     output: {
         filename: '[name].js', // !: Definimos el nombre [name] del Entry para el archivo js ...
-        path: path.resolve(__dirname, 'public') // !: Definimos la ruta de salida ...
+        path: path.resolve(__dirname, 'public/') // !: Definimos la ruta de salida ...
     },
     module: {
         rules: [
@@ -25,7 +28,10 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                      presets: ['@babel/preset-env' , 'env']
+                        presets: [
+                            '@babel/preset-env' ,
+                            'env'
+                        ],
                     }
                 },
                 exclude: /node_modules/, // ?: Exclusion de Carpeta ...
@@ -43,7 +49,7 @@ module.exports = {
                     {
                       loader: 'file-loader',
                       options: {
-                        outputPath: '/img', // !: Carpeta de salida
+                        outputPath: 'assets/img', // !: Carpeta de salida
                         name : '[name].[ext]'
                       }
                     }
@@ -51,7 +57,41 @@ module.exports = {
                 exclude: [
                     path.resolve(__dirname, "/node_modules/")
                 ]
-            }
+            },
+            {
+                test: /\.vue$/,
+                loader : 'vue-loader'
+            },
+            {
+                test: /\.s(c|a)ss$/,
+                use: [
+                  'vue-style-loader',
+                  'css-loader',
+                  {
+                    loader: 'sass-loader',
+                    // Requires sass-loader@^7.0.0
+                    options: {
+                      implementation: require('sass'),
+                      fiber: require('fibers'),
+                      indentedSyntax: true // optional
+                    },
+                    // Requires sass-loader@^8.0.0
+                    options: {
+                      implementation: require('sass'),
+                      sassOptions: {
+                        fiber: require('fibers'),
+                        indentedSyntax: true // optional
+                      }
+                    }
+                  }
+                ]
+              }
         ]
-    }
+    },
+    resolve: {
+        alias: {
+          vue: 'vue/dist/vue.js'
+        },
+        extensions: ["*", ".js", ".vue", ".json"],
+      },
 };
