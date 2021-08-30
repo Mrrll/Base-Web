@@ -1,0 +1,19 @@
+{% block content %}
+  <h1>
+    Welcome to {{ app_name }} !!!
+  </h1>
+  <h2>
+    Hello {{ user.name }}
+  </h2>
+  <p>
+    In order to access you must verify your email!
+  </p>
+  <p>
+    Click on the link to verify your account
+  </p>
+  <a href="{{ base_url }}{{ url_for('auth.verification.check') }}?csrf_value={{
+    token
+    }}">
+    Verification link
+  </a>
+{% endblock %}

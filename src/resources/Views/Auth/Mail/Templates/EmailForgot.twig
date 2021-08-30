@@ -1,0 +1,18 @@
+{% block content %}
+  <h1>
+    Hello {{ user.name }}
+  </h1>
+  <p>
+    Forgot your password, don't worry!
+  </p>
+  <p>
+    Click on the link below and follow the instructions, thank you.
+  </p>
+  <a href="{{ base_url }}{{
+    url_for(
+      'auth.password.forgot.verification'
+    )
+    }}?csrf_value={{ token }}">
+    Forgot Link
+  </a>
+{% endblock %}
