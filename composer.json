@@ -29,5 +29,11 @@
             "name": "Mrrll",
             "email": "edgarmarrollo@gmail.com"
         }
-    ]
+    ],
+    "scripts": {
+        "build" : "webpack --mode production",
+        "dev" : "webpack --mode development",
+        "watch" : "webpack --mode development --watch"
+    }
+
 }
