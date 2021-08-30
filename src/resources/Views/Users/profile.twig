@@ -1,0 +1,108 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+  <div class="row align-items-center">
+    <div class="col col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h4>
+            Profile
+          </h4>
+        </div>
+        <div class="card-body">
+          <form action="{{ url_for('profile') }}"
+            method="post"
+            autocomplete="on"
+            novalidate>
+            <div class="text-center">
+            <img src="{{help.assets('Img/blank_profile.png')}}" class="rounded-circle" alt="..." width="200px" height="200px">
+          </div>
+            <div class="input-group mb-3">
+              <input type="file" class="form-control" id="avatar">
+              <label class="input-group-text" for="inputGroupFile02">Avatar</label>
+            </div>
+            <div class="input-group mb-3 form-group has-validation">
+                <div class="input-group-prepend">
+                <span class="input-group-text">Credentials</span>
+                </div>
+              <input type="text"
+                name="firstname"
+                id="firstname"
+                placeholder="you name"
+                class="form-control {{ errors.firstname ? 'is-invalid' : '' }}" value="{{ old.firstname }}" />
+              <div class="invalid-feedback">
+                {{ errors.firstname|first }}
+              </div>
+              <input type="text"
+                name="lastname"
+                id="lastname"
+                placeholder="your surname"
+                class="form-control {{ errors.lastname ? 'is-invalid' : '' }}" value="{{ old.lastname }}" />
+              <div class="invalid-feedback">
+                {{ errors.lastname|first }}
+              </div>
+              <input type="text"
+                name="dni"
+                id="dni"
+                placeholder="you dni"
+                class="form-control {{ errors.dni ? 'is-invalid' : '' }}" value="{{ old.dni }}" />
+              <div class="invalid-feedback">
+                {{ errors.dni|first }}
+              </div>
+            </div>
+            <div class="input-group mb-3 form-group has-validation">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Phones</span>
+                </div>
+                 <input type="phone"
+                name="phone"
+                id="phone"
+                placeholder="your landline number"
+                class="form-control {{ errors.phone ? 'is-invalid' : '' }}" value="{{ old.phone }}" />
+              <div class="invalid-feedback">
+                {{ errors.phone|first }}
+              </div>
+              <input type="phone"
+                name="mobile"
+                id="mobile"
+                placeholder="your phone number"
+                class="form-control {{ errors.mobile ? 'is-invalid' : '' }}" value="{{ old.mobile }}" />
+              <div class="invalid-feedback">
+                {{ errors.mobile|first }}
+              </div>
+            </div>
+            <div class="input-group mb-3 form-group has-validation">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Specs</span>
+                </div>
+                <select name="gender"
+                id="gender"
+                class="form-control {{ errors.gender ? 'is-invalid' : '' }}" value="{{ old.gender }}" >
+                <option value="male">Male</option>
+                <option value="famale">Famale</option>
+               </select>
+              <div class="invalid-feedback">
+                {{ errors.gender|first }}
+              </div>
+              <input type="date"
+                name="birthday"
+                id="birthday"
+                placeholder="your birthday"
+                class="form-control {{ errors.birthday ? 'is-invalid' : '' }}" value="{{ old.birthday }}" />
+              <div class="invalid-feedback">
+                {{ errors.birthday|first }}
+              </div>
+            </div>
+            <div class="form-action">
+              <button type="submit"
+                class="btn btn-default mt-3 bg-dark text-white">
+                Save
+              </button>
+              {{ csrf.field | raw }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

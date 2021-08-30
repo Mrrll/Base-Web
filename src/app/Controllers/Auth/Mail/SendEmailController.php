@@ -33,9 +33,7 @@ class SendEmailController extends Controller
                 ], // ?: Aqui añadimos datos a la vista ...
                 function ($message) use ($user) {
                     $message->setTo($user->getEmail(), $user->getName());
-                    $message->setSubject(
-                        'Welcome to ' . $_ENV['APP_NAME'] . '!'
-                    );
+                    $message->setSubject('Welcome to '.$_ENV['APP_NAME'].'!');
                 }
             );
             // ! -------------------------------------------------------------------
@@ -90,7 +88,7 @@ class SendEmailController extends Controller
             'name' => 'ValidationEmail',
             'value' => [
                 'token' => $this->csrf->getTokenName(),
-                'email' => $params['email'],
+                'email' => $params['email']
             ],
             'lifetime' => '5 minutes',
         ]);
@@ -105,9 +103,7 @@ class SendEmailController extends Controller
             ], // ?: Aqui añadimos datos a la vista ...
             function ($message) use ($user) {
                 $message->setTo($user[0]->getEmail(), $user[0]->getName());
-                $message->setSubject(
-                    'Forgot Password to ' . $_ENV['APP_NAME'] . ''
-                );
+                $message->setSubject('Forgot Password to '.$_ENV['APP_NAME'] .'');
             }
         );
         $this->flash->addMessage(

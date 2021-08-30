@@ -11,5 +11,8 @@ use App\Middleware\Routes\VerificationEmailMiddleware;
 return function (App $app) {
     // *: Rutas web ...
     $app->get('/', 'IndexController:index')->setName('welcom');
-    $app->get('/home', 'HomeController:index')->setName('home')->add(new AuthMiddleware($app->getContainer()))->add(new VerificationEmailMiddleware($app->getContainer()));
+    $app->group('auth', function () use ($app) {
+        $app->get('/home', 'HomeController:index')->setName('home');
+        $app->get('/profile', 'ProfileController:index')->setName('profile');
+    })->add(new AuthMiddleware($app->getContainer()))->add(new VerificationEmailMiddleware($app->getContainer()));
 }; // ?: funcion de retorno y solicitud de la App ...

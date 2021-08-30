@@ -36,8 +36,8 @@ class VerificationEmailController extends Controller
         }
         $usuario = $this->auth->user(); // ?: Obtenemos el usuario con inicio de sesion ...
         // *: Actualizamos la fecha y la verificacion del email ...
-        $usuario->setUpdatedAt(new \DateTime('now'));
-        $usuario->setEmailVerifiedAt(new \DateTime('now'));
+        $usuario->setUpdatedAt();
+        $usuario->setEmailVerifiedAt();
         try {
             $this->db->persist($usuario);
             $this->db->flush(); // ?: Subir datos a la db ...

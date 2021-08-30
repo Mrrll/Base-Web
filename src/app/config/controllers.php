@@ -25,3 +25,6 @@ $container->set('SendEmailController', function ($container) {
 $container->set('ForgotPasswordController', function ($container) {
     return new \App\Controllers\Auth\Secure\ForgotPasswordController($container);
 });
+$container->set('ProfileController', function ($container) {
+    return new \App\Controllers\Users\ProfileController($container);
+});

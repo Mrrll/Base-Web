@@ -21,11 +21,9 @@ final class EmailCheck extends AbstractRule
         }
     }
     // ! -------------------------------------------------------------------
-    public function validate($input): bool
+    public function validate($input) : bool
     {
         // ?: Valida si el email ya esta registrado ...
-        return count(
-            $this->db->getRepository(User::class)->findBy(['email' => $input])
-        ) === 1;
+        return count($this->db->getRepository(User::class)->findBy(array('email' => $input))) === 1;
     }
 }
