@@ -29,9 +29,26 @@ html body {
   height: 100vh;
 }
 html body header {
-  position: absolute;
+  position: relative;
   width: 100%;
 }
 html body main {
   height: 100%;
+}
+html body .v-toolbar__content .v-breadcrumbs__item {
+  font-size: 1rem !important;
+}
+html body .v-toolbar__content .v-breadcrumbs__item--disabled {
+  color: #d1cdcd !important;
+}
+html body .v-toolbar__content a {
+  font-weight: 400;
+  line-height: 1.5 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: white !important;
+}
+html body .title a {
+  font-size: 1.25rem !important;
 }

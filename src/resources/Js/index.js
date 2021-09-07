@@ -5,9 +5,8 @@ import vuetify from '../Plugins/vuetify' // path to vuetify export
 
 Vue.component('example-component', require('./components/exampleComponent.vue').default);
 Vue.component('nav-component', require('./components/App/NavComponent.vue').default);
-
 new Vue({
   // render: (h) => h(App),
   el:"#app",
-  vuetify,
+  vuetify
 })

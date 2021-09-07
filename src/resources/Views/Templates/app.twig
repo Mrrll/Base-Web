@@ -13,6 +13,7 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
 "https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css"
 >
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
     <title>
       {{app_name}}
     </title>
@@ -20,20 +21,21 @@
   <body>
 
       {# {% include 'Templates/Layouts/nav.twig' %} #}
-      {# <div class="container p-5"> #}
         <div id="app"  class="v-application v-application--is-ltr theme--light" data-app="true">
           <div class="v-application--wrap">
             <header>
-              <nav-component></nav-component>
+              <nav-component title="{{app_name}}" :auth={{auth | json_encode()}} route={{routeCurrent}} asset={{help.assets()}} ></nav-component>
             </header>
+            <div class="container p-5">
             <main class="py-4">
             {% include 'Templates/Layouts/flash.twig' %}
             {% block content %}
             {% endblock %}
             </main>
+            </div>
           </div>
         </div>
-      {# </div> #}
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"
       integrity="sha512-QAV866KcCo2YSgj8D7BW+Zn3Fe5wVKTWwzKtWy8mkW+tePcJL7JYilvdfrBFQcdz4ODD48GpIPnhTp9UDI37uw=="
       crossorigin="anonymous"
