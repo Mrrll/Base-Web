@@ -1,6 +1,7 @@
 window.Vue = require('vue')
 import vuetify from '../Plugins/vuetify' // path to vuetify export
-
+window.axios = require('axios');
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 // import App from "./components/App.vue";
 
 Vue.component('example-component', require('./components/exampleComponent.vue').default);
