@@ -20,45 +20,48 @@
         <v-img :src="avatarPreview"></v-img>
       </v-avatar>
     </div>
-    <v-card-text>
-      <v-file-input
-        :disabled="!isEditing"
-        v-model="files"
-        color="green accent-3"
-        counter
-        label="File input"
-        placeholder="Select your files"
-        prepend-icon="mdi-paperclip"
-        outlined
-        :show-size="1000"
-        @change="changeFile"
-      >
-        <template v-slot:selection="{ index, text }">
-          <v-chip v-if="index < 2" color="grey darken-4" dark label small>
-            {{ text }}
-          </v-chip>
+    <v-form @submit.prevent="save" v-model="valid" enctype="multipart/form-data">
+      <v-card-text>
+        <v-file-input
+          :disabled="!isEditing"
+          v-model="files"
+          color="green accent-3"
+          counter
+          label="File input"
+          placeholder="Select your files"
+          prepend-icon="mdi-paperclip"
+          outlined
+          :show-size="1000"
+          @change="changeFile"
+        >
+          <template v-slot:selection="{ index, text }">
+            <v-chip v-if="index < 2" color="grey darken-4" dark label small>
+              {{ text }}
+            </v-chip>
 
-          <span
-            v-else-if="index === 2"
-            class="text-overline grey--text text--darken-3 mx-2"
-          >
-            +{{ files.length - 2 }} File(s)
-          </span>
-        </template>
-      </v-file-input>
-      <v-text-field
-        :disabled="!isEditing"
-        color="white"
-        label="Name"
-      ></v-text-field>
-    </v-card-text>
-    <v-divider></v-divider>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn :disabled="!isEditing" color="success" @click="save">
-        Save
-      </v-btn>
-    </v-card-actions>
+            <span
+              v-else-if="index === 2"
+              class="text-overline grey--text text--darken-3 mx-2"
+            >
+              +{{ files.length - 2 }} File(s)
+            </span>
+          </template>
+        </v-file-input>
+        <v-text-field
+          :disabled="!isEditing"
+          v-model="firstname"
+          color="white"
+          label="Firstname"
+        ></v-text-field>
+      </v-card-text>
+      <v-divider></v-divider>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn :disabled="!isEditing" color="success" @click="save">
+          Save
+        </v-btn>
+      </v-card-actions>
+    </v-form>
     <v-snackbar v-model="hasSaved" :timeout="2000" absolute bottom left>
       Your profile has been updated
     </v-snackbar>
@@ -66,8 +69,14 @@
 </template>
 <script>
 export default {
+  props : ['csrf'],
+  mounted : function(){
+    console.log(this.csrf);
+  },
   data() {
     return {
+      valid : false,
+      firstname : '',
       files: [],
       avatarPreview : "Img/perfil-avatar.jpg",
       hasSaved: false,
@@ -86,8 +95,23 @@ export default {
       )
     },
     save() {
-      this.isEditing = !this.isEditing
-      this.hasSaved = true
+      if (this.valid) {
+        this.isEditing = !this.isEditing
+        let formData = new FormData();
+        const data = {
+          avatar : this.files,
+          firstname : this.firstname
+        }
+        formData.append('avatar', this.files);
+        formData.append('firstname', this.firstname);
+        formData.append('csrf_name', this.csrf.csrf_name);
+        formData.append('csrf_value', this.csrf.csrf_value);
+        axios.post('/profile', formData ).then((res) => {
+          console.log(res);
+          // this.pasoDatos(res.data)
+        });
+        this.hasSaved = true
+      }
     },
     changeFile(event) {
       if (event) {

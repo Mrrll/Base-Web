@@ -15,6 +15,10 @@ class CsrfViewMiddleware extends Controller
                 <input type="hidden" name="'.$this->csrf->getTokenNameKey() .'" value="'.$this->csrf->getTokenName() .'">
                 <input type="hidden" name="'.$this->csrf->getTokenValueKey() .'" value="'.$this->csrf->getTokenValue() .'">
             ',
+            'values' => [
+                'csrf_name' => $this->csrf->getTokenName(),
+                'csrf_value' => $this->csrf->getTokenValue()
+            ]
         ]); // ?: Enviamos a la vista los imputs con los tokens generados ...
         $response = $handler->handle($request);
         return $response;
