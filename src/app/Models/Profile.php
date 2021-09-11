@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Profile
  *
- * @ORM\Table(name="profiles", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQ_EF687F2E7927C74", columns={"dni"})})
+ * @ORM\Table(name="profiles", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQ_EF687F2E7927C74", columns={"nif"})})
  * @ORM\Entity
  */
 
@@ -23,9 +23,9 @@ class Profile extends Image
     /**
      * @var string
      *
-     * @ORM\Column(name="dni", type="string", length=255, nullable=true)
+     * @ORM\Column(name="nif", type="string", length=255, nullable=true)
      */
-    private $dni;
+    private $nif;
 
     /**
      * @var string
@@ -94,25 +94,25 @@ class Profile extends Image
         return $this->id;
     }
     /**
-     * Get the value of dni
+     * Get the value of nif
      *
      * @return  string
      */
-    public function getDni()
+    public function getNif()
     {
-        return $this->dni;
+        return $this->nif;
     }
 
     /**
-     * Set the value of dni
+     * Set the value of nif
      *
-     * @param  string  $dni
+     * @param  string  $nif
      *
      * @return  self
      */
-    public function setDni(string $dni)
+    public function setNif(string $nif)
     {
-        $this->dni = $dni;
+        $this->nif = $nif;
 
         return $this;
     }

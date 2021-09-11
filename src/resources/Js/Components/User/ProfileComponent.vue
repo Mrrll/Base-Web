@@ -73,9 +73,9 @@
           <v-col cols="4">
             <v-text-field
               :disabled="!isEditing"
-              v-model="dni"
+              v-model="nif"
               color="white"
-              label="Dni"
+              label="Nif"
             ></v-text-field>
           </v-col>
           <v-col cols="4">
@@ -157,7 +157,7 @@ export default {
       valid: false,
       firstname: '',
       lastname: '',
-      dni: '',
+      nif: '',
       files: [],
       avatarPreview: 'Img/perfil-avatar.jpg',
       hasSaved: false,
@@ -182,7 +182,7 @@ export default {
         formData.append('avatar', this.files)
         formData.append('firstname', this.firstname)
         formData.append('lastname', this.lastname)
-        formData.append('dni', this.dni)
+        formData.append('nif', this.nif)
         formData.append('csrf_name', this.csrf.csrf_name)
         formData.append('csrf_value', this.csrf.csrf_value)
         axios.post('/profile', formData).then((res) => {
