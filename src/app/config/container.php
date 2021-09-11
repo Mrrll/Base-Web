@@ -66,7 +66,9 @@ $container->set('validator', function ($container) {
 // *: Agregar servicio del csrf a su contenedor ...
 $container->set('csrf', function ($container) {
     $responseFactory = new ResponseFactory();
-    return new \Slim\Csrf\Guard($responseFactory);
+    $csrf =  new \Slim\Csrf\Guard($responseFactory);
+    $csrf->setPersistentTokenMode(true); // !: Para poder trabajar con Axios ...
+    return $csrf;
 });
 // *: Agregar servicio del mailer a su contenedor ...
 $container->set('mailer', function ($container) {

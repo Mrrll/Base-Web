@@ -20,7 +20,11 @@
         <v-img :src="avatarPreview"></v-img>
       </v-avatar>
     </div>
-    <v-form @submit.prevent="save" v-model="valid" enctype="multipart/form-data">
+    <v-form
+      @submit.prevent="save"
+      v-model="valid"
+      enctype="multipart/form-data"
+    >
       <v-card-text>
         <v-file-input
           :disabled="!isEditing"
@@ -47,12 +51,87 @@
             </span>
           </template>
         </v-file-input>
-        <v-text-field
-          :disabled="!isEditing"
-          v-model="firstname"
-          color="white"
-          label="Firstname"
-        ></v-text-field>
+        <v-row>
+          <v-col cols="6">
+            <v-text-field
+              :disabled="!isEditing"
+              v-model="firstname"
+              color="white"
+              label="Firstname"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field
+              :disabled="!isEditing"
+              v-model="lastname"
+              color="white"
+              label="Lastname"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <v-text-field
+              :disabled="!isEditing"
+              v-model="dni"
+              color="white"
+              label="Dni"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="4">
+            <v-text-field
+              :disabled="!isEditing"
+              v-model="phone"
+              color="white"
+              label="Phone"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="4">
+            <v-text-field
+              :disabled="!isEditing"
+              v-model="mobile"
+              color="white"
+              label="Mobile"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="6">
+            <v-select :disabled="!isEditing" :items="gender" label="Gender" outlined></v-select>
+          </v-col>
+          <v-col cols="6">
+            <v-menu
+              ref="menu"
+              v-model="menu"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  :disabled="!isEditing"
+                  v-model="date"
+                  label="Birthday date"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="date"
+                :active-picker.sync="activePicker"
+                :max="
+                  new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+                    .toISOString()
+                    .substr(0, 10)
+                "
+                min="1950-01-01"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+        </v-row>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
@@ -69,22 +148,23 @@
 </template>
 <script>
 export default {
-  props : ['csrf'],
-  mounted : function(){
-    console.log(this.csrf);
+  props: ['csrf'],
+  mounted: function () {
+    console.log(this.csrf)
   },
   data() {
     return {
-      valid : false,
-      firstname : '',
+      valid: false,
+      firstname: '',
+      lastname: '',
+      dni: '',
       files: [],
-      avatarPreview : "Img/perfil-avatar.jpg",
+      avatarPreview: 'Img/perfil-avatar.jpg',
       hasSaved: false,
       isEditing: null,
-      model: null
+      model: null,
     }
   },
-
   methods: {
     customFilter(item, queryText, itemText) {
       const textOne = item.name.toLowerCase()
@@ -95,21 +175,20 @@ export default {
       )
     },
     save() {
+      console.log(this.csrf)
       if (this.valid) {
         this.isEditing = !this.isEditing
-        let formData = new FormData();
-        const data = {
-          avatar : this.files,
-          firstname : this.firstname
-        }
-        formData.append('avatar', this.files);
-        formData.append('firstname', this.firstname);
-        formData.append('csrf_name', this.csrf.csrf_name);
-        formData.append('csrf_value', this.csrf.csrf_value);
-        axios.post('/profile', formData ).then((res) => {
-          console.log(res);
+        let formData = new FormData()
+        formData.append('avatar', this.files)
+        formData.append('firstname', this.firstname)
+        formData.append('lastname', this.lastname)
+        formData.append('dni', this.dni)
+        formData.append('csrf_name', this.csrf.csrf_name)
+        formData.append('csrf_value', this.csrf.csrf_value)
+        axios.post('/profile', formData).then((res) => {
+          console.log(res)
           // this.pasoDatos(res.data)
-        });
+        })
         this.hasSaved = true
       }
     },

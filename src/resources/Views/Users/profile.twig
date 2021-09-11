@@ -2,7 +2,7 @@
 
 {% block content %}
   <profile-component :csrf={{csrf.values | json_encode()}}></profile-component>
-  <div class="row align-items-center">
+  {# <div class="row align-items-center">
     <div class="col col-lg-12">
       <div class="card">
         <div class="card-header">
@@ -105,5 +105,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> #}
 {% endblock %}
