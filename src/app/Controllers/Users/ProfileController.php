@@ -24,7 +24,7 @@ class ProfileController extends Controller
         $validation = $this->validator->validate($request, [
             'firstname' => v::optional(v::notEmpty()->alpha(' ')),
             'lastname' => v::optional(v::notEmpty()->alpha(' ')),
-            'dni' => v::notEmpty()->nif(),
+            'dni' => v::notEmpty()->nif()->nifAvailable($this->container), // ?: Regla personalizada ...,
         ]);
         dd($validation);
         // $uploadedFiles = $request->getUploadedFiles();
