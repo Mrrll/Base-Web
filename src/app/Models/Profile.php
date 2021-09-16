@@ -91,7 +91,7 @@ class Profile extends Image
      */
     public function getId()
     {
-        return $this->id;
+        return parent::getId();
     }
     /**
      * Get the value of nif
@@ -244,7 +244,7 @@ class Profile extends Image
      */
     public function getBirthday()
     {
-        return $this->birthday;
+        return $this->birthday->format('d-m-Y');
     }
 
     /**
@@ -278,5 +278,21 @@ class Profile extends Image
         $this->user = $user;
 
         return $this;
+    }
+    public function json()
+    {
+        return json_encode(array(
+            'nif' => $this->getNif(),
+            'firstname' => $this->getFirstname(),
+            'lastname' => $this->getLastname(),
+            'phone' => $this->getPhone(),
+            'mobile' => $this->getMobile(),
+            'gender' => $this->getGender(),
+            'birthday' => $this->getBirthday(),
+            'user' => array(
+                'name' => $this->getUser()->getName(),
+                'email' => $this->getUser()->getEmail(),
+            )
+        ));
     }
 }

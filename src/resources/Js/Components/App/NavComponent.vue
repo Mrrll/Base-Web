@@ -15,18 +15,18 @@
       </v-breadcrumbs>
       <!-- ---------- -->
       <!-- //* Nav links -->
-      <v-breadcrumbs v-if="auth.check" :items="NavLink"></v-breadcrumbs>
+      <v-breadcrumbs v-if="auth" :items="NavLink"></v-breadcrumbs>
       <!-- ---------- -->
       <v-spacer></v-spacer>
       <!-- //* Menu User -->
-      <v-menu offset-y v-if="auth.check">
+      <v-menu offset-y v-if="auth">
         <template v-slot:activator="{ on, attrs }">
           <v-breadcrumbs color="grey darken-3" dark>
             <v-breadcrumbs-item v-bind="attrs" v-on="on">
               <v-avatar class="mr-2" size="28">
                 <img src="Img/perfil-avatar.jpg"/>
               </v-avatar>
-              {{ auth.user.name }}
+              {{ user }}
               <v-icon right dark>
                 mdi-menu-down
               </v-icon>
@@ -65,7 +65,7 @@
 </template>
 <script>
 export default {
-  props: ['title', 'auth', 'route'],
+  props: ['title', 'auth', 'route', 'user'],
   data() {
     return {
       ItemSelected : '',

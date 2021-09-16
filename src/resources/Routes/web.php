@@ -15,5 +15,6 @@ return function (App $app) {
         $app->get('/home', 'HomeController:index')->setName('home');
         $app->get('/profile', 'ProfileController:index')->setName('profile');
         $app->post('/profile', 'ProfileController:Save');
+        $app->options('/profile', 'ProfileController:Ready');
     })->add(new AuthMiddleware($app->getContainer()))->add(new VerificationEmailMiddleware($app->getContainer()));
 }; // ?: funcion de retorno y solicitud de la App ...

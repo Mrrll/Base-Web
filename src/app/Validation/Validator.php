@@ -11,13 +11,19 @@ class Validator
     public function validate(Request $request, array $rules)
     {
         // !: Esta parte habria que meterla en algun sito para poder acceder a ella ( Podria ir en Controller ) ...
-        $params = (array)$request->getParsedBody(); // ?: Obtenemos Parametros del formulario ...
+        $params = (array) $request->getParsedBody(); // ?: Obtenemos Parametros del formulario ...
+        $files = $request->getUploadedFiles();
         // ! -------------------------------------------------------------------
+        if ($files) {
+            foreach ($files as $key => $value) {
+                $newElement = [$key => $value->getClientFilename()];
+                $params = array_merge($params, $newElement);
+            }
+        }
+
         foreach ($rules as $field => $rule) {
             try {
-                $rule
-                    ->setName(ucfirst($field))
-                    ->assert($params[$field]); // ?: Validacion de los datos ...
+                $rule->setName(ucfirst($field))->assert($params[$field]); // ?: Validacion de los datos ...
             } catch (NestedValidationException $e) {
                 $this->errors[$field] = $e->getMessages(); // ?: Captura del mensaje de error de la validacion ...
             }
@@ -28,5 +34,9 @@ class Validator
     public function failed()
     {
         return !empty($this->errors); // ?: Valida si la variable errors contiene algun error ...
+    }
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }

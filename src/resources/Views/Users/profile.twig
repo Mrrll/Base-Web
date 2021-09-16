@@ -1,7 +1,8 @@
 {% extends 'templates/app.twig' %}
 
 {% block content %}
-  <profile-component :csrf={{csrf.values | json_encode()}}></profile-component>
+{# {{auth.user.profile.getBirthday() | json_encode()}} #}
+  <profile-component :csrf={{csrf.values | json_encode() }}></profile-component>
   {# <div class="row align-items-center">
     <div class="col col-lg-12">
       <div class="card">

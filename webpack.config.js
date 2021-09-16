@@ -4,6 +4,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
+require("babel-polyfill");
 
 // *: Construimos el modulo de exportacion ...
 module.exports = {
@@ -15,7 +16,7 @@ module.exports = {
         new VueLoaderPlugin()
     ],
     entry: {
-        app: ['./src/resources/Js/index.js', './src/resources/Css/Style.css'] // !: Colocamos dos arhivos para un punto de entrada ...
+        app: ['babel-polyfill','./src/resources/Js/index.js', './src/resources/Css/Style.css'] // !: Colocamos dos arhivos para un punto de entrada ...
     },
     output: {
         filename: '[name].js', // !: Definimos el nombre [name] del Entry para el archivo js ...

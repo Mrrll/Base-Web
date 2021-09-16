@@ -2,7 +2,8 @@
 namespace App\Validation\Rules;
 // TODO: Archivo de Regla Personalizada para el Nif ...
 // *: Importamos las classes necesarias ...
-use App\Models\User;
+
+use App\Models\Profile;
 use Respect\Validation\Rules\AbstractRule;
 final class NifAvailable extends AbstractRule
 {
@@ -21,10 +22,14 @@ final class NifAvailable extends AbstractRule
         }
     }
     // ! -------------------------------------------------------------------
-    public function validate($input) : bool
+    public function validate($input): bool
     {
         // ?: Valida si el nif ya esta registrado ...
-        dd("hola");
-        return count($this->db->getRepository(User::class)->findBy(array('nif' => $input))) === 0;
+        if ($this->db->getRepository(Profile::class)->findBy(['nif' => $input, 'user' => $this->auth->user()->getId()])){
+            return true;
+        }
+        return count(
+            $this->db->getRepository(Profile::class)->findBy(['nif' => $input])
+        ) === 0;
     }
 }

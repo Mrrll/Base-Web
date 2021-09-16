@@ -6,13 +6,16 @@ use Slim\Views\Twig;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 use Slim\Psr7\Factory\ResponseFactory;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\Routing\RouteContext;
 // *: Agregar servicio de Doctrine a su contenedor ...
 $container->set(EntityManager::class, static function (
     Container $container
 ): EntityManager {
     $settings = $container->get('settings'); // ?: obtener parametros de configuracion ...
     // *: Parametros de configuracion AnnotationMetadata ...
-    $paths = array(realpath(__DIR__ . '/../Models'));
+    $paths = [realpath(__DIR__ . '/../Models')];
     $isDevMode = true;
     $proxyDir = null;
     $cache = null;
@@ -40,7 +43,7 @@ $container->set('flash', function ($container) {
 });
 // *: Agregar servicio de funciones de ayuda a su contenedor ...
 $container->set('helpers', function ($container) {
-    return new \App\Helpers\Helper;
+    return new \App\Helpers\Helper();
 });
 // *: Agregar servicio de vista a su contenedor ...
 $container->set('view', function ($container) {
@@ -66,8 +69,15 @@ $container->set('validator', function ($container) {
 // *: Agregar servicio del csrf a su contenedor ...
 $container->set('csrf', function ($container) {
     $responseFactory = new ResponseFactory();
-    $csrf =  new \Slim\Csrf\Guard($responseFactory);
+    $csrf = new \Slim\Csrf\Guard($responseFactory);
     $csrf->setPersistentTokenMode(true); // !: Para poder trabajar con Axios ...
+    $csrf->setFailureHandler(function (
+        Request $request,
+        RequestHandler $handler
+    ) {
+        $request = $request->withAttribute('csrf_status', false);
+        return $handler->handle($request);
+    });
     return $csrf;
 });
 // *: Agregar servicio del mailer a su contenedor ...

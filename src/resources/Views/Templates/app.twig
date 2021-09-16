@@ -24,7 +24,11 @@
         <div id="app"  class="v-application v-application--is-ltr theme--light" data-app="true">
           <div class="v-application--wrap">
             <header>
-              <nav-component title="{{app_name}}" :auth={{auth | json_encode()}} route={{routeCurrent}} asset={{help.assets()}} ></nav-component>
+            {% if auth.user.profile %}
+              <nav-component title="{{app_name}}" :auth={{auth.check | json_encode()}} route={{routeCurrent}} user="{{auth.user.profile.getFirstname}} {{auth.user.profile.getLastname}}"></nav-component>
+            {% else %}
+              <nav-component title="{{app_name}}" :auth={{auth.check | json_encode()}} route={{routeCurrent}} :user={{auth.user.getName | json_encode()}}></nav-component>
+            {% endif %}
             </header>
             <div class="container p-5">
             <main class="py-4">

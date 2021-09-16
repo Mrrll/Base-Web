@@ -10,6 +10,7 @@ class OldinputMiddleware extends Controller
     public function __invoke(Request $request, RequestHandler $handler) : Response
     {
         $params = (array)$request->getParsedBody(); // ?: Obtenemos Parametros del formulario ...
+        unset($params['csrf_name'], $params['csrf_value']);
         if (isset($_SESSION['old'])) {
             $this->view->getEnvironment()->addGlobal('old', $_SESSION['old']); // ?: Pasamos datos a la vista ...
         }
