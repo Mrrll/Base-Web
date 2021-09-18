@@ -6,8 +6,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Respect\Validation\Validator as v;
 use Slim\Routing\RouteContext;
-use Psr\Http\Message\UploadedFileInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 // TODO: Archivo de Controlador de la vista About ...
 class ProfileController extends Controller
 {
@@ -58,7 +56,10 @@ class ProfileController extends Controller
         if ($uploadedFiles) {
            $uploadedFile = $uploadedFiles['avatar'];
             if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-                $filename = $this->helpers->moveUploadedFile($this->helpers->assets('Img/'), $uploadedFile);
+                if($profile->getUrl()){
+                    unlink($profile->getUrl());
+                }
+                $filename = $this->helpers->moveUploadedFile($this->helpers->assets('Img/'), $uploadedFile, $user->getName() .'_profile_'. $user->getId());
                 $profile->setUrl($this->helpers->assets('Img/'.$filename));
             } else {
                 $response->getBody()->write('Image could not be uploaded');
@@ -81,7 +82,11 @@ class ProfileController extends Controller
     public function Ready(Request $request, Response $response)
     {
         $profile = $this->db->getRepository(Profile::class)->findOneby(['user'=> $this->auth->user()->getId()]);
-       $response->getBody()->write($profile->json());
-       return $response;
+        if ($profile) {
+            $response->getBody()->write($profile->json());
+        } else {
+            $response->getBody()->write('false');
+        }
+       return $response->withHeader('Content-Type', 'application/json');
     }
 }

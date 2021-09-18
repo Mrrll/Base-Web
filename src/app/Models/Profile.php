@@ -289,6 +289,7 @@ class Profile extends Image
             'mobile' => $this->getMobile(),
             'gender' => $this->getGender(),
             'birthday' => $this->getBirthday(),
+            'avatar' => $this->getUrl(),
             'user' => array(
                 'name' => $this->getUser()->getName(),
                 'email' => $this->getUser()->getEmail(),

@@ -24,7 +24,7 @@
           <v-breadcrumbs color="grey darken-3" dark>
             <v-breadcrumbs-item v-bind="attrs" v-on="on">
               <v-avatar class="mr-2" size="28">
-                <img src="Img/perfil-avatar.jpg"/>
+                <img id="avatar-profile" :src="imgAvatar"/>
               </v-avatar>
               {{ user }}
               <v-icon right dark>
@@ -65,9 +65,10 @@
 </template>
 <script>
 export default {
-  props: ['title', 'auth', 'route', 'user'],
+  props: ['title', 'auth', 'route', 'user','avatar'],
   data() {
     return {
+      imgAvatar : 'Img/perfil-avatar.jpg',
       ItemSelected : '',
       NavLink: [
         {
@@ -96,6 +97,9 @@ export default {
     }
   },
   mounted : function () {
+    if (this.avatar) {
+      this.imgAvatar = this.avatar
+    }
     for (let index = 0; index < this.ListMenu.length; index++) {
       const element = this.ListMenu[index];
       if (element.disabled) {

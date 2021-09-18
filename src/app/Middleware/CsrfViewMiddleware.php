@@ -33,7 +33,7 @@ class CsrfViewMiddleware extends Controller
         if (false === $request->getAttribute('csrf_status')) {
             $responseFactory = new ResponseFactory();
             $response = $responseFactory->createResponse();
-            $response->getBody()->write('Failed CSRF check!');
+            $response->getBody()->write('Token check failed! ... update your browser.');
             return $response->withStatus(400);
         } // ?: Proceso de respuesta cuando Failed CSRF ...
         $response = $handler->handle($request);

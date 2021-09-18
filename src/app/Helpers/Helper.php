@@ -12,7 +12,8 @@ class Helper
     // *: Ayuda a subir archivos ...
     public function moveUploadedFile(
         string $directory,
-        UploadedFileInterface $uploadedFile
+        UploadedFileInterface $uploadedFile,
+        string $name = null
     ) {
         $extension = pathinfo(
             $uploadedFile->getClientFilename(),
@@ -23,6 +24,9 @@ class Helper
         $basename = bin2hex(random_bytes(8));
         $filename = sprintf('%s.%0.8s', $basename, $extension);
 
+        if ($name != null) {
+            $filename = "{$name}.{$extension}";
+        }
         $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
 
         return $filename;

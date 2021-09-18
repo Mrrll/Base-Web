@@ -25,7 +25,7 @@
           <div class="v-application--wrap">
             <header>
             {% if auth.user.profile %}
-              <nav-component title="{{app_name}}" :auth={{auth.check | json_encode()}} route={{routeCurrent}} user="{{auth.user.profile.getFirstname}} {{auth.user.profile.getLastname}}"></nav-component>
+              <nav-component title="{{app_name}}" :auth={{auth.check | json_encode()}} route={{routeCurrent}} user="{{auth.user.profile.getFirstname}} {{auth.user.profile.getLastname}}" avatar="{{auth.user.profile.getUrl}}"></nav-component>
             {% else %}
               <nav-component title="{{app_name}}" :auth={{auth.check | json_encode()}} route={{routeCurrent}} :user={{auth.user.getName | json_encode()}}></nav-component>
             {% endif %}

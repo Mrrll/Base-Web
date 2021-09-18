@@ -25,11 +25,13 @@ final class NifAvailable extends AbstractRule
     public function validate($input): bool
     {
         // ?: Valida si el nif ya esta registrado ...
-        if ($this->db->getRepository(Profile::class)->findBy(['nif' => $input, 'user' => $this->auth->user()->getId()])){
-            return true;
+        if ($this->auth->check()) {
+            if ($this->db->getRepository(Profile::class)->findBy(['nif' => $input, 'user' => $this->auth->user()->getId()])){
+                return true;
+            }
+            return count(
+                $this->db->getRepository(Profile::class)->findBy(['nif' => $input])
+            ) === 0;
         }
-        return count(
-            $this->db->getRepository(Profile::class)->findBy(['nif' => $input])
-        ) === 0;
     }
 }
