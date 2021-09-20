@@ -36,6 +36,6 @@ export default {
             drawer : true,
             group: null
         }
-    }
+    },
 }
 </script>
