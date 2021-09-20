@@ -7,6 +7,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 Vue.component('example-component', require('./components/exampleComponent.vue').default);
 Vue.component('nav-component', require('./components/App/NavComponent.vue').default);
 Vue.component('profile-component', require('./components/User/ProfileComponent.vue').default);
+Vue.component('drawer-component', require('./components/App/DrawerComponent.vue').default);
 
 
 Vue.filter('capitalize', function (value) {

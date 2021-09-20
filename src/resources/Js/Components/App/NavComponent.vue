@@ -1,28 +1,29 @@
 <template>
   <v-layout wrap>
     <v-app-bar color="grey darken-4" dark>
-      <!-- <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-      large
-      > -->
+      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
       <!-- //* Title -->
-      <v-breadcrumbs>
+      <v-breadcrumbs class="d-none d-md-flex">
         <v-breadcrumbs-item href="/" class="title">
           <v-avatar>
             <img src="favicon.png" :alt="title" />
           </v-avatar>
-          <v-toolbar-title class="ml-2">{{ title }}</v-toolbar-title>
+          <v-toolbar-title class="ml-2" >{{ title }}</v-toolbar-title>
         </v-breadcrumbs-item>
       </v-breadcrumbs>
       <!-- ---------- -->
       <!-- //* Nav links -->
-      <v-breadcrumbs v-if="auth" :items="NavLink"></v-breadcrumbs>
+      <v-tabs dark class="d-none d-md-flex">
+        <v-tab v-for="(link, index) in NavLink" :key="index" :href="link.href" :disabled="link.disabled">{{link.text}}</v-tab>
+      </v-tabs>
+      <!-- <v-breadcrumbs v-if="auth" :items="NavLink"></v-breadcrumbs> -->
       <!-- ---------- -->
       <v-spacer></v-spacer>
       <!-- //* Menu User -->
       <v-menu offset-y v-if="auth">
         <template v-slot:activator="{ on, attrs }">
           <v-breadcrumbs color="grey darken-3" dark>
-            <v-breadcrumbs-item v-bind="attrs" v-on="on">
+            <v-breadcrumbs-item v-bind="attrs" v-on="on" class="d-none d-md-flex">
               <v-avatar class="mr-2" size="28">
                 <img id="avatar-profile" :src="imgAvatar"/>
               </v-avatar>
@@ -72,6 +73,7 @@ export default {
       ItemSelected : '',
       NavLink: [
         {
+          id : 1,
           text: 'Home',
           disabled: this.route == 'home' ? true : false,
           href: '/home',

@@ -2,27 +2,35 @@
   <v-container fluid fill-height>
     <v-layout align-center justify-center style="heigth: 100%;">
       <v-flex>
+        <!-- // *: Pantalla bloqueo -->
         <v-overlay v-show="messageError != ''">
-        <v-row>
-          <v-col col p-0>
-            <v-alert border="left" prominent text type="error">
-              <v-row align="center">
-                <v-col class="grow">
-                  {{messageError}}
-                </v-col>
-                <v-col class="shrink">
-                  <v-btn @click="reload" class="ma-2" text icon color="red lighten-2">
-                    <v-icon x-large>mdi-autorenew</v-icon>
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-alert>
-          </v-col>
-        </v-row>
+          <v-row>
+            <v-col col p-0>
+              <v-alert border="left" prominent text type="error">
+                <v-row align="center">
+                  <v-col class="grow">
+                    {{ messageError }}
+                  </v-col>
+                  <v-col class="shrink">
+                    <v-btn
+                      @click="reload"
+                      class="ma-2"
+                      text
+                      icon
+                      color="red lighten-2"
+                    >
+                      <v-icon x-large>mdi-autorenew</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-alert>
+            </v-col>
+          </v-row>
         </v-overlay>
         <v-row>
           <v-col col p-0>
-            <v-card class="overflow-hidden" color="grey darken-3" dark>
+            <!-- // *: Tarjeta del Formulario -->
+            <v-card class="overflow-hidden" dark>
               <v-progress-linear
                 :active="loading"
                 :indeterminate="loading"
@@ -30,13 +38,14 @@
                 top
                 color="green accent-3"
               ></v-progress-linear>
-              <v-toolbar flat color="grey darken-4">
+              <!-- //  *: Barra encabezado Tarjeta del Formulario -->
+              <v-toolbar flat>
                 <v-icon>mdi-account</v-icon>
                 <v-toolbar-title class="font-weight-light">
                   User Profile
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-btn color="grey darken-4" fab small @click="editing">
+                <v-btn fab small @click="editing">
                   <v-icon v-if="isEditing">
                     mdi-close
                   </v-icon>
@@ -45,16 +54,45 @@
                   </v-icon>
                 </v-btn>
               </v-toolbar>
-              <div class="text-center">
-                <v-avatar class="m-2" size="128">
-                  <v-img :src="avatarPreview"></v-img>
-                </v-avatar>
+              <!-- // *: Imagen Avatar  -->
+              <div class="text-center p-2">
+                <v-menu top offset-x :disabled="!isProfile">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-avatar size="128" v-bind="attrs" v-on="on">
+                      <v-img :src="avatarPreview"></v-img>
+                    </v-avatar>
+                  </template>
+                  <v-list color="transparent">
+                    <v-list-item>
+                      <v-btn icon color="success" x-large @click="imputFile">
+                        <v-icon v-if="isImputFile" x-large>
+                          mdi-close
+                        </v-icon>
+                        <v-icon v-else x-large>
+                          mdi-pencil
+                        </v-icon>
+                      </v-btn>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-btn
+                      icon
+                      color="error"
+                      x-large
+                      @click="deleteImg"
+                      >
+                        <v-icon x-large>mdi-delete</v-icon>
+                      </v-btn>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
               </div>
+              <!-- // *: Formulario -->
               <v-form
                 @submit.prevent="save"
                 v-model="valid"
                 enctype="multipart/form-data"
               >
+              <!-- // *: Inputs  -->
                 <v-card-text>
                   <v-file-input
                     :disabled="!isEditing"
@@ -67,11 +105,11 @@
                     outlined
                     :show-size="1000"
                     @change="changeFile"
+                    v-show="isImputFile"
                   >
                     <template v-slot:selection="{ index, text }">
                       <v-chip
                         v-if="index < 2"
-                        color="grey darken-4"
                         dark
                         label
                         small
@@ -92,7 +130,6 @@
                       <v-text-field
                         :disabled="!isEditing"
                         v-model="form.firstname"
-                        color="white"
                         label="Firstname"
                         :messages="messages.firstname"
                         :class="{ 'error--text': hasError }"
@@ -102,7 +139,6 @@
                       <v-text-field
                         :disabled="!isEditing"
                         v-model="form.lastname"
-                        color="white"
                         label="Lastname"
                         :messages="messages.lastname"
                         :class="{ 'error--text': hasError }"
@@ -114,7 +150,6 @@
                       <v-text-field
                         :disabled="!isEditing"
                         v-model="form.nif"
-                        color="white"
                         label="Nif"
                         :messages="messages.nif"
                         :class="{ 'error--text': hasError }"
@@ -124,7 +159,6 @@
                       <v-text-field
                         :disabled="!isEditing"
                         v-model="form.phone"
-                        color="white"
                         label="Phone"
                         :messages="messages.phone"
                         :class="{ 'error--text': hasError }"
@@ -134,7 +168,6 @@
                       <v-text-field
                         :disabled="!isEditing"
                         v-model="form.mobile"
-                        color="white"
                         label="Mobile"
                         :messages="messages.mobile"
                         :class="{ 'error--text': hasError, '': !hasError }"
@@ -193,6 +226,7 @@
                   </v-row>
                 </v-card-text>
                 <v-divider></v-divider>
+                <!-- // *: Botonera Formulario -->
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn :disabled="!isEditing" color="success" @click="save">
@@ -200,6 +234,7 @@
                   </v-btn>
                 </v-card-actions>
               </v-form>
+              <!-- // *: Mensaje de Salida   -->
               <v-snackbar
                 v-model="hasSaved"
                 :timeout="2000"
@@ -208,16 +243,13 @@
                 center
               >
                 <v-row align="center">
-                  <v-col class="grow" >
+                  <v-col class="grow">
                     {{ messagehasSaved }}
                   </v-col>
                   <v-col class="shrink">
-                      <v-icon
-                        color="green accent-3"
-                        large
-                      >
-                        mdi-shield-check
-                      </v-icon>
+                    <v-icon color="green accent-3" large>
+                      mdi-shield-check
+                    </v-icon>
                   </v-col>
                 </v-row>
               </v-snackbar>
@@ -232,7 +264,7 @@
 export default {
   props: ['csrf'],
   mounted: function () {
-    // console.log(this.auth.user.getName)
+    // console.log(this.isImputFile)
   },
   created() {
     this.ready()
@@ -271,6 +303,8 @@ export default {
       hasError: false,
       messagehasSaved: '',
       messageError: '',
+      isImputFile: true,
+      isProfile: null
     }
   },
   methods: {
@@ -278,6 +312,9 @@ export default {
       this.isEditing = !this.isEditing
       this.hasError = false
       this.clearMessages()
+    },
+    imputFile() {
+      this.isImputFile = !this.isImputFile
     },
     clearMessages() {
       Object.keys(this.messages).forEach((element) => {
@@ -338,10 +375,10 @@ export default {
           })
           .finally(() => {
             document.getElementById('avatar-profile').src = this.avatarPreview
-            if(save){
+            if (save) {
               this.hasSaved = true
             }
-            this.loading = !this.loading
+            this.loading = true
           })
       }
     },
@@ -369,15 +406,23 @@ export default {
         if (res.data.avatar) {
           this.avatarPreview = res.data.avatar
         }
-        this.loading = !this.loading
+        this.isProfile = !this.isProfile
       }
+      this.loading = !this.loading
     },
     convertDateFormat(string) {
       var info = string.split('-').reverse().join('-')
       return info
     },
-    reload(){
+    reload() {
       location.reload()
+    },
+    reloadImage(){
+      return "Img/perfil-avatar.jpg"
+    },
+    async deleteImg(){
+      this.avatarPreview = this.reloadImage()
+      this.form.avatar = []
     }
   },
 }

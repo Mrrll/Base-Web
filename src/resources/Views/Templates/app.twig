@@ -21,7 +21,7 @@
   <body>
 
       {# {% include 'Templates/Layouts/nav.twig' %} #}
-        <div id="app"  class="v-application v-application--is-ltr theme--light" data-app="true">
+        <div id="app"  class="v-application v-application--is-ltr theme--dark" data-app="true">
           <div class="v-application--wrap">
             <header>
             {% if auth.user.profile %}
@@ -33,6 +33,7 @@
             <div class="container p-5">
             <main class="py-4">
             {% include 'Templates/Layouts/flash.twig' %}
+            <drawer-component></drawer-component>
             {% block content %}
             {% endblock %}
             </main>

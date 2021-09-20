@@ -1,47 +1,53 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-decoration: none;
-    list-style: none;
-    outline: 0;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -o-appearance: none;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+  outline: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
 }
 html {
-    overflow: auto;
-    body {
-        height: 100vh;
-        header{
-            position: relative;
-            width: 100%;
-        }
-        main{
-            height: 100%;
-        }
-        .v-toolbar__content{
-            .v-breadcrumbs__item{
-                font-size: 1rem !important;
-            }
-            .v-breadcrumbs__item--disabled{
-                 color: rgb(209, 205, 205) !important;
-            }
-            a {
-                font-weight :400;
-                line-height: 1.5 !important;
-                overflow: hidden !important;
-                text-overflow: ellipsis !important;
-                white-space: nowrap !important;
-                color: white !important;
-
-            }
-        }
-        .title {
-            a {
-                font-size: 1.25rem !important;
-            }
-        }
+  overflow: auto;
+  body {
+    height: 100vh;
+    header {
+      position: relative;
+      width: 100%;
     }
+    main {
+      height: 100%;
+    }
+    .v-toolbar__content {
+      .v-breadcrumbs{
+        flex-wrap: nowrap !important;
+      }
+      .v-breadcrumbs__item {
+        font-size: 1rem !important;
+      }
+      .v-breadcrumbs__item--disabled {
+        color: rgb(209, 205, 205) !important;
+      }
+      a {
+        font-weight: 400;
+        line-height: 1.5 !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        color: white !important;
+      }
+    }
+    .v-menu__content {
+      min-width: auto !important;
+      box-shadow: none !important;
+    }
+    .title {
+      a {
+        font-size: 1.25rem !important;
+      }
+    }
+  }
 }
