@@ -30,10 +30,11 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         presets: [
-                            '@babel/preset-env' ,
+                            '@babel/preset-env',
                             'env'
                         ],
-                    }
+                        plugins: ["@babel/plugin-proposal-object-rest-spread"]
+                    },
                 },
                 exclude: /node_modules/, // ?: Exclusion de Carpeta ...
             },

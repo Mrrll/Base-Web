@@ -23,6 +23,7 @@
   "homepage": "https://github.com/Mrrll/SecurityWolf#readme",
   "devDependencies": {
     "@babel/core": "^7.15.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.15.6",
     "@babel/preset-env": "^7.15.6",
     "@mdi/font": "^5.9.55",
     "babel-loader": "^8.2.2",
