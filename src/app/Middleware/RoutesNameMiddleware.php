@@ -12,6 +12,9 @@ class RoutesNameMiddleware extends Controller
     public function __invoke(Request $request, RequestHandler $handler) : Response
     {
         $RouteName = RouteContext::fromRequest($request)->getRoute()->getName();// ?: Obtiene el nombre de la ruta ...
+        if ($RouteName) {
+            $_SESSION['routeCurrent'] = $RouteName;
+        }
         $this->view->getEnvironment()->addGlobal('routeCurrent', $RouteName); // ?: Enviamos a la vista el nombre de la ruta ...
         $response = $handler->handle($request);
         return $response;

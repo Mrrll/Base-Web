@@ -1,31 +1,25 @@
 <template>
   <v-layout wrap>
-    <v-navigation-drawer absolute temporary @input="updateDrawer" :value="getSideMenuOpen">
-      <v-list nav dense>
+    <v-navigation-drawer absolute temporary @input="updateDrawer" :value="getSideMenuOpen" dark>
+      <v-list nav dense link color="grey darken-4">
         <v-list-item-group
           v-model="group"
-          active-class="deep-purple--text text--accent-4"
+          active-class="grey darken-2--text text--accent-4"
         >
-          <v-list-item>
+          <v-list-item
+          v-for="(list, index) in getNavLists"
+          :key="index"
+          :href="list.href"
+          v-show="(list.component.indexOf('drawer') > -1) && getUI.auth === list.auth"
+          >
             <v-list-item-icon>
-              <v-icon>
-                mdi-home
-              </v-icon>
+              <v-icon> {{list.icon}} </v-icon>
             </v-list-item-icon>
             <v-list-item-title>
-              Home
+              {{list.text}}
             </v-list-item-title>
           </v-list-item>
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon>
-                mdi-account
-              </v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>
-              Account
-            </v-list-item-title>
-          </v-list-item>
+
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -40,7 +34,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('ui',['getSideMenuOpen']) // this.$store.state.ui.isSideMenuOpen
+    ...mapGetters('ui',['getSideMenuOpen']), // this.$store.state.ui.isSideMenuOpen
+    ...mapGetters('ui', ['getNavLists']),
+    ...mapGetters('ui', ['getUI']),
   },
   methods : {
     ...mapMutations('ui',['toggleSideMenu']),

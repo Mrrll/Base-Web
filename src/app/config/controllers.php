@@ -28,3 +28,6 @@ $container->set('ForgotPasswordController', function ($container) {
 $container->set('ProfileController', function ($container) {
     return new \App\Controllers\Users\ProfileController($container);
 });
+$container->set('UiController', function ($container) {
+    return new \App\Controllers\Users\UiController($container);
+});

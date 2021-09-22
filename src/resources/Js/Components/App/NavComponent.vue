@@ -1,33 +1,48 @@
 <template>
   <v-layout wrap>
     <v-app-bar color="grey darken-4" dark>
-      <v-app-bar-nav-icon @click="changeDrawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        @click="changeDrawer"
+        class="d-flex d-md-none"
+      ></v-app-bar-nav-icon>
       <!-- //* Title -->
       <v-breadcrumbs class="d-none d-md-flex">
         <v-breadcrumbs-item href="/" class="title">
           <v-avatar>
-            <img src="favicon.png" :alt="title" />
+            <img src="favicon.png" :alt="getUI.app_name" />
           </v-avatar>
-          <v-toolbar-title class="ml-2" >{{ title }}</v-toolbar-title>
+          <v-toolbar-title class="ml-2">{{ getUI.app_name }}</v-toolbar-title>
         </v-breadcrumbs-item>
       </v-breadcrumbs>
       <!-- ---------- -->
-      <!-- //* Nav links -->
-      <v-tabs dark class="d-none d-md-flex">
-        <v-tab v-for="(link, index) in NavLink" :key="index" :href="link.href" :disabled="link.disabled">{{link.text}}</v-tab>
+      <!-- //* Tabs Nav links -->
+      <v-tabs dark class="d-none d-md-flex" color="waith"
+      grow>
+        <v-tab
+          v-for="(link, index) in getNavLists"
+          :key="index"
+          :href="link.href"
+          :disabled="link.disabled"
+          v-show="(link.component.indexOf('tab') > -1) && getUI.auth === link.auth"
+        >
+          {{ link.text }}
+        </v-tab>
       </v-tabs>
-      <!-- <v-breadcrumbs v-if="auth" :items="NavLink"></v-breadcrumbs> -->
       <!-- ---------- -->
       <v-spacer></v-spacer>
       <!-- //* Menu User -->
-      <v-menu offset-y v-if="auth">
+      <v-menu offset-y v-if="getUI.auth">
         <template v-slot:activator="{ on, attrs }">
           <v-breadcrumbs color="grey darken-3" dark>
-            <v-breadcrumbs-item v-bind="attrs" v-on="on" class="d-none d-md-flex">
+            <v-breadcrumbs-item
+              v-bind="attrs"
+              v-on="on"
+              class="d-none d-md-flex"
+            >
               <v-avatar class="mr-2" size="28">
-                <img id="avatar-profile" :src="imgAvatar"/>
+                <img id="avatar-profile" :src="imgAvatar" />
               </v-avatar>
-              {{ user }}
+              {{ getUI.user }}
               <v-icon right dark>
                 mdi-menu-down
               </v-icon>
@@ -35,12 +50,13 @@
           </v-breadcrumbs>
         </template>
         <v-list link color="grey darken-4" dark>
-          <v-list-item-group color="grey darken-2" dark v-model="ItemSelected" >
+          <v-list-item-group color="grey darken-2" dark v-model="ItemSelected">
             <v-list-item
-              v-for="(item, i) in ListMenu"
+              v-for="(item, i) in getNavLists"
               :key="i"
               :href="item.href"
               :disabled="item.disabled"
+              v-show="(item.component.indexOf('menu') > -1)"
             >
               <v-list-item-icon>
                 <v-icon v-text="item.icon"></v-icon>
@@ -65,21 +81,15 @@
   </v-layout>
 </template>
 <script>
-import {mapGetters, mapMutations} from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
-  props: ['title', 'auth', 'route', 'user','avatar'],
+  beforeMount() {
+    this.UI()
+  },
   data() {
     return {
-      imgAvatar : 'Img/perfil-avatar.jpg',
-      ItemSelected : '',
-      NavLink: [
-        {
-          id : 1,
-          text: 'Home',
-          disabled: this.route == 'home' ? true : false,
-          href: '/home',
-        },
-      ],
+      imgAvatar: 'Img/perfil-avatar.jpg',
+      ItemSelected: '',
       LoginRegister: [
         {
           text: 'Register',
@@ -92,35 +102,78 @@ export default {
           href: '/login',
         },
       ],
-      ListMenu: [
-        { text: 'Profile', href: '/profile', icon: 'mdi-account-cog', disabled: this.route == 'profile' ? true : false },
-        { text: 'Change Password', href: '/change', icon: 'mdi-key-variant', disabled: this.route == 'auth.password.change' ? true : false },
-        { text: 'Logout', href: '/logout', icon: 'mdi-logout-variant', disabled: this.route == 'logout' ? true : false },
-      ],
     }
   },
-  mounted : function () {
+
+  mounted: function () {
+
+  },
+  computed: {
+    ...mapGetters('ui', ['getSideMenuOpen']),
+    ...mapGetters('ui', ['getUI']),
+    ...mapGetters('ui', ['getNavLists']),
+  },
+  created: function () {
+    this.ChargerNavList()
     if (this.avatar) {
       this.imgAvatar = this.avatar
     }
-    for (let index = 0; index < this.ListMenu.length; index++) {
-      const element = this.ListMenu[index];
-      if (element.disabled) {
-        this.ItemSelected = index;
-      }
-    }
+    // for (let index = 0; index < this.ListMenu.length; index++) {
+    //   const element = this.ListMenu[index]
+    //   if (element.disabled) {
+    //     this.ItemSelected = index
+    //   }
+    // }
   },
-  computed : {
-    ...mapGetters('ui',['getSideMenuOpen'])
-  },
-  methods : {
-    ...mapMutations('ui',['toggleSideMenu']),
-    changeDrawer (){
+  methods: {
+    ...mapMutations('ui', ['toggleSideMenu']),
+    ...mapActions('ui', ['UI']),
+    ...mapActions('ui', ['NavLists']),
+    changeDrawer() {
       let drawer = this.getSideMenuOpen //this.$store.state.ui.isSideMenuOpen
       drawer = !drawer
       this.toggleSideMenu(drawer) // this.$store.commit('ui/toggleSideMenu',drawer)
       return drawer
+    },
+    ChargerNavList() {
+      setTimeout(() => {
+        let lista = [
+          {
+            text: 'Home',
+            href: '/home',
+            icon : 'mdi-home',
+            disabled: this.getUI.routeCurrent == 'home' ? true : false,
+            component : ['tab', 'drawer'],
+            auth : true
+          },
+          {
+            text: 'Profile',
+            href: '/profile',
+            icon: 'mdi-account-cog',
+            disabled: this.getUI.routeCurrent == 'profile' ? true : false,
+            component : ['menu'],
+            auth : true
+          },
+          {
+            text: 'Change Password',
+            href: '/change',
+            icon: 'mdi-key-variant',
+            disabled: this.getUI.routeCurrent == 'auth.password.change' ? true : false,
+            component : ['menu', 'drawer'],
+            auth : true
+          },
+          {
+            text: 'Logout',
+            href: '/logout',
+            icon: 'mdi-logout-variant',
+            disabled: this.getUI.routeCurrent == 'logout' ? true : false,
+            component : ['menu', 'drawer'],
+            auth : true
+          }
+        ]
+        this.NavLists(lista)
+      }, 200);
     }
-  }
+  },
 }
 </script>
