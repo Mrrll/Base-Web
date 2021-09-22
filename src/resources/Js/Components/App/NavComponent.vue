@@ -1,7 +1,7 @@
 <template>
   <v-layout wrap>
     <v-app-bar color="grey darken-4" dark>
-      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="changeDrawer"></v-app-bar-nav-icon>
       <!-- //* Title -->
       <v-breadcrumbs class="d-none d-md-flex">
         <v-breadcrumbs-item href="/" class="title">
@@ -65,6 +65,7 @@
   </v-layout>
 </template>
 <script>
+import {mapGetters, mapMutations} from 'vuex';
 export default {
   props: ['title', 'auth', 'route', 'user','avatar'],
   data() {
@@ -107,6 +108,18 @@ export default {
       if (element.disabled) {
         this.ItemSelected = index;
       }
+    }
+  },
+  computed : {
+    ...mapGetters('ui',['getSideMenuOpen'])
+  },
+  methods : {
+    ...mapMutations('ui',['toggleSideMenu']),
+    changeDrawer (){
+      let drawer = this.getSideMenuOpen //this.$store.state.ui.isSideMenuOpen
+      drawer = !drawer
+      this.toggleSideMenu(drawer) // this.$store.commit('ui/toggleSideMenu',drawer)
+      return drawer
     }
   }
 }

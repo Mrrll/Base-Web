@@ -1,9 +1,11 @@
 <template>
   <v-layout wrap>
-    <v-navigation-drawer v-model="drawer" absolute temporary>
+    <v-navigation-drawer absolute temporary @input="updateDrawer" :value="getSideMenuOpen">
       <v-list nav dense>
-        <v-list-item-group v-model="group"
-          active-class="deep-purple--text text--accent-4">
+        <v-list-item-group
+          v-model="group"
+          active-class="deep-purple--text text--accent-4"
+        >
           <v-list-item>
             <v-list-item-icon>
               <v-icon>
@@ -30,12 +32,21 @@
   </v-layout>
 </template>
 <script>
+import { mapGetters, mapMutations } from 'vuex'
 export default {
-    data () {
-        return {
-            drawer : true,
-            group: null
-        }
-    },
+  data() {
+    return {
+      group: null,
+    }
+  },
+  computed: {
+    ...mapGetters('ui',['getSideMenuOpen']) // this.$store.state.ui.isSideMenuOpen
+  },
+  methods : {
+    ...mapMutations('ui',['toggleSideMenu']),
+    updateDrawer(e){
+      this.toggleSideMenu(e) // this.$store.commit('ui/toggleSideMenu',e)
+    }
+  }
 }
 </script>
