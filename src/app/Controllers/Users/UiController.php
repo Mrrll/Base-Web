@@ -17,16 +17,13 @@ class UiController extends Controller
         // ! -------------------------------------------------------------------
 
         $datos = [
-            'app_name' => $_ENV['APP_NAME'],
-            'routeCurrent' => $_SESSION['routeCurrent'],
+            'auth' => $this->auth->check(),
         ];
         if ($this->auth->check()) {
             $profile = $this->db
                 ->getRepository(Profile::class)
                 ->findOneby(['user' => $this->auth->user()->getId()]);
             $datos = [
-                'app_name' => $_ENV['APP_NAME'],
-                'routeCurrent' => $_SESSION['routeCurrent'],
                 'auth' => $this->auth->check(),
                 'user' => ($profile) ? $profile->getFirstname()." ".$profile->getLastname() : $this->auth->user()->getName()
             ];

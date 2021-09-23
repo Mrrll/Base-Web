@@ -9,9 +9,9 @@
       <v-breadcrumbs class="d-none d-md-flex">
         <v-breadcrumbs-item href="/" class="title">
           <v-avatar>
-            <img src="favicon.png" :alt="getUI.app_name" />
+            <img src="favicon.png" :alt="title" />
           </v-avatar>
-          <v-toolbar-title class="ml-2">{{ getUI.app_name }}</v-toolbar-title>
+          <v-toolbar-title class="ml-2">{{ title }}</v-toolbar-title>
         </v-breadcrumbs-item>
       </v-breadcrumbs>
       <!-- ---------- -->
@@ -83,6 +83,7 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
+  props : ['title','route'],
   beforeMount() {
     this.UI()
   },
@@ -136,43 +137,41 @@ export default {
       return drawer
     },
     ChargerNavList() {
-      setTimeout(() => {
-        let lista = [
-          {
-            text: 'Home',
-            href: '/home',
-            icon : 'mdi-home',
-            disabled: this.getUI.routeCurrent == 'home' ? true : false,
-            component : ['tab', 'drawer'],
-            auth : true
-          },
-          {
-            text: 'Profile',
-            href: '/profile',
-            icon: 'mdi-account-cog',
-            disabled: this.getUI.routeCurrent == 'profile' ? true : false,
-            component : ['menu'],
-            auth : true
-          },
-          {
-            text: 'Change Password',
-            href: '/change',
-            icon: 'mdi-key-variant',
-            disabled: this.getUI.routeCurrent == 'auth.password.change' ? true : false,
-            component : ['menu', 'drawer'],
-            auth : true
-          },
-          {
-            text: 'Logout',
-            href: '/logout',
-            icon: 'mdi-logout-variant',
-            disabled: this.getUI.routeCurrent == 'logout' ? true : false,
-            component : ['menu', 'drawer'],
-            auth : true
-          }
-        ]
-        this.NavLists(lista)
-      }, 200);
+      let lista = [
+        {
+          text: 'Home',
+          href: '/home',
+          icon : 'mdi-home',
+          disabled: this.route == 'home' ? true : false,
+          component : ['tab', 'drawer'],
+          auth : true
+        },
+        {
+          text: 'Profile',
+          href: '/profile',
+          icon: 'mdi-account-cog',
+          disabled: this.route == 'profile' ? true : false,
+          component : ['menu'],
+          auth : true
+        },
+        {
+          text: 'Change Password',
+          href: '/change',
+          icon: 'mdi-key-variant',
+          disabled: this.route == 'auth.password.change' ? true : false,
+          component : ['menu', 'drawer'],
+          auth : true
+        },
+        {
+          text: 'Logout',
+          href: '/logout',
+          icon: 'mdi-logout-variant',
+          disabled: this.route == 'logout' ? true : false,
+          component : ['menu', 'drawer'],
+          auth : true
+        }
+      ]
+      this.NavLists(lista)
     }
   },
 }
