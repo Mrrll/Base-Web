@@ -56,7 +56,7 @@
               </v-toolbar>
               <!-- // *: Imagen Avatar  -->
               <div class="text-center p-2">
-                <v-menu top offset-x :disabled="!isProfile">
+                <v-menu top offset-x :disabled="!isProfile || !isEditing">
                   <template v-slot:activator="{ on, attrs }">
                     <v-avatar size="128" v-bind="attrs" v-on="on">
                       <v-img :src="avatarPreview"></v-img>
@@ -261,10 +261,11 @@
   </v-container>
 </template>
 <script>
+import { mapGetters, mapMutations } from 'vuex';
 export default {
   props: ['csrf'],
   mounted: function () {
-    // console.log(this.isImputFile)
+
   },
   created() {
     this.ready()
@@ -304,10 +305,15 @@ export default {
       messagehasSaved: '',
       messageError: '',
       isImputFile: true,
-      isProfile: null
+      isProfile: false
     }
   },
+  computed : {
+    ...mapGetters('ui', ['getUI']),
+  },
   methods: {
+    ...mapMutations('ui',['setAvatar']),
+    ...mapMutations('ui',['setUserName']),
     editing() {
       this.isEditing = !this.isEditing
       this.hasError = false
@@ -374,11 +380,12 @@ export default {
             }
           })
           .finally(() => {
-            document.getElementById('avatar-profile').src = this.avatarPreview
+            this.setUserName((this.form.firstname != '' || this.form.lastname != '' ) ? this.form.firstname + " " + this.form.lastname : this.getUI.user)
+            this.setAvatar(this.avatarPreview)
             if (save) {
               this.hasSaved = true
             }
-            this.loading = true
+            this.loading = false
           })
       }
     },
@@ -404,9 +411,11 @@ export default {
           }
         })
         if (res.data.avatar) {
+          this.setAvatar(res.data.avatar)
           this.avatarPreview = res.data.avatar
         }
         this.isProfile = !this.isProfile
+        this.imputFile()
       }
       this.loading = !this.loading
     },

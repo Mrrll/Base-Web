@@ -9,7 +9,7 @@
       <v-breadcrumbs class="d-none d-md-flex">
         <v-breadcrumbs-item href="/" class="title">
           <v-avatar>
-            <img src="favicon.png" :alt="title" />
+            <img :src="getUI.logo" :alt="title" />
           </v-avatar>
           <v-toolbar-title class="ml-2">{{ title }}</v-toolbar-title>
         </v-breadcrumbs-item>
@@ -40,7 +40,7 @@
               class="d-none d-md-flex"
             >
               <v-avatar class="mr-2" size="28">
-                <img id="avatar-profile" :src="imgAvatar" />
+                <img :src="getUI.avatar" />
               </v-avatar>
               {{ getUI.user }}
               <v-icon right dark>
@@ -89,7 +89,7 @@ export default {
   },
   data() {
     return {
-      imgAvatar: 'Img/perfil-avatar.jpg',
+      // imgAvatar: 'Img/perfil-avatar.jpg',
       ItemSelected: '',
       LoginRegister: [
         {
@@ -116,9 +116,9 @@ export default {
   },
   created: function () {
     this.ChargerNavList()
-    if (this.avatar) {
-      this.imgAvatar = this.avatar
-    }
+    // if (this.avatar) {
+    //   this.imgAvatar = this.avatar
+    // }
     // for (let index = 0; index < this.ListMenu.length; index++) {
     //   const element = this.ListMenu[index]
     //   if (element.disabled) {

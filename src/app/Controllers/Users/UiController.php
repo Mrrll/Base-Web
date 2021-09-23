@@ -17,15 +17,19 @@ class UiController extends Controller
         // ! -------------------------------------------------------------------
 
         $datos = [
+            'logo' => $_ENV['APP_LOGO'],
             'auth' => $this->auth->check(),
+            'avatar' => $_ENV['AVATAR_DEFAULT']
         ];
         if ($this->auth->check()) {
             $profile = $this->db
                 ->getRepository(Profile::class)
                 ->findOneby(['user' => $this->auth->user()->getId()]);
             $datos = [
+                'logo' => $_ENV['APP_LOGO'],
+                'avatar' => ($profile) ? $profile->getUrl() :$_ENV['AVATAR_DEFAULT'],
                 'auth' => $this->auth->check(),
-                'user' => ($profile) ? $profile->getFirstname()." ".$profile->getLastname() : $this->auth->user()->getName()
+                'user' => ($profile && ($profile->getFirstname() || $profile->getLastname())) ? $profile->getFirstname()." ".$profile->getLastname() : $this->auth->user()->getName()
             ];
         }
         $response->getBody()->write( json_encode($datos));
