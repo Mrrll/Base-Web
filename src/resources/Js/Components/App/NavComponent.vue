@@ -33,7 +33,7 @@
       <!-- //* Menu User -->
       <v-menu offset-y v-if="getUI.auth">
         <template v-slot:activator="{ on, attrs }">
-          <v-breadcrumbs color="grey darken-3" dark>
+          <v-breadcrumbs color="grey darken-3">
             <v-breadcrumbs-item
               v-bind="attrs"
               v-on="on"
@@ -116,15 +116,12 @@ export default {
   },
   created: function () {
     this.ChargerNavList()
-    // if (this.avatar) {
-    //   this.imgAvatar = this.avatar
-    // }
-    // for (let index = 0; index < this.ListMenu.length; index++) {
-    //   const element = this.ListMenu[index]
-    //   if (element.disabled) {
-    //     this.ItemSelected = index
-    //   }
-    // }
+    for (let index = 0; index < this.getNavLists.length; index++) {
+      const element = this.getNavLists[index]
+      if (element.disabled && (element.component.indexOf('menu') > -1)) {
+        this.ItemSelected = index
+      }
+    }
   },
   methods: {
     ...mapMutations('ui', ['toggleSideMenu']),

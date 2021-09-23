@@ -23,6 +23,8 @@ html {
     }
     .v-toolbar__content {
       .v-breadcrumbs{
+        min-width: max-content !important;
+        max-width: 25%;
         flex-wrap: nowrap !important;
       }
       .v-breadcrumbs__item {
@@ -40,7 +42,7 @@ html {
         color: white !important;
       }
     }
-    .v-menu__content {
+    div[role='menu'] {
       min-width: auto !important;
       box-shadow: none !important;
     }

@@ -36,6 +36,8 @@ html body main {
   height: 100%;
 }
 html body .v-toolbar__content .v-breadcrumbs {
+  min-width: max-content !important;
+  max-width: 25%;
   flex-wrap: nowrap !important;
 }
 html body .v-toolbar__content .v-breadcrumbs__item {
@@ -52,7 +54,7 @@ html body .v-toolbar__content a {
   white-space: nowrap !important;
   color: white !important;
 }
-html body .v-menu__content {
+html body div[role=menu] {
   min-width: auto !important;
   box-shadow: none !important;
 }
